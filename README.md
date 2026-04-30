@@ -1,4 +1,4 @@
-# BORA OSS — Build Once, Run Anywhere
+# aaagents-oss — Autonomous Asset Management Agents (Community Edition)
 
 [![OSS CI](https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/actions/workflows/oss-ci.yml/badge.svg)](https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/actions/workflows/oss-ci.yml)
 [![Release](https://img.shields.io/github/v/release/Autonomous-Asset-Management-Agents/aaagents-oss?label=Release&color=blue)](https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases)
@@ -17,7 +17,7 @@
 # Option A — via aaagents CLI (recommended)
 pip install aaagents
 aaagents install   # interactive setup wizard
-aaagents start     # spins up the full BORA stack
+aaagents start     # spins up the full aaagents-oss stack
 
 # Option B — via Docker Compose directly
 cp .env.oss.example .env.oss
@@ -35,16 +35,16 @@ docker compose -f docker-compose.oss.yml up -d
 
 ---
 
-## 🧠 What is BORA?
+## 🧠 What is aaagents-oss?
 
-BORA is the **Community Edition** of the AAAgents autonomous trading platform. It ships with:
+**aaagents-oss** is the Community Edition of the Autonomous Asset Management Agents platform. It ships with:
 
 | Feature | Description |
 |---|---|
 | **Round Table V2** | 9-agent LangGraph consensus framework (LSTM, RL, News, Market Regime, Compliance…) |
 | **Iron Dome** | MiFID II-inspired risk management: VIX kill-switch, position limits, wash-trade detection |
 | **Plugin Architecture** | Add custom strategy agents via `StockSpecialistRegistry` — no core changes needed |
-| **BORA Control Center** | React/TypeScript dashboard — live portfolio view, agent votes, kill-switch |
+| **Control Center** | React/TypeScript dashboard — live portfolio view, agent votes, kill-switch |
 | **Local-First** | PostgreSQL + Redis, fully containerized — no GCP, no Firebase required |
 
 ---
@@ -64,7 +64,7 @@ For AI agents and LLMs: use `CLAUDE.md` (loaded automatically by Claude Code) as
 
 ## 🔌 Plugin Tutorial (Add Your Own Strategy)
 
-BORA's agent system is fully extensible. A minimal plugin:
+The aaagents-oss agent system is fully extensible. A minimal plugin:
 
 ```python
 # plugins/my_strategy.py
@@ -127,4 +127,4 @@ Model weights are licensed separately under CC-BY-4.0 — see [LICENSE-MODELS](.
 
 ---
 
-*Maintained by the AAAgents Community | [BORA OSS v0.1.0-beta](https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/tag/v0.1.0-beta)*
+*Maintained by the AAAgents Community | [aaagents-oss v0.1.0-beta](https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/tag/v0.1.0-beta)*
