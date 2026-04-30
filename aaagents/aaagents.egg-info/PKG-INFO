@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: aaagents
+Version: 0.1.0
+Summary: BORA OSS — Plug & Run CLI for the AAA Trading Platform
+License: Apache-2.0
+Project-URL: Homepage, https://aaagents.de
+Project-URL: Documentation, https://github.com/aaagents/aaagents-oss/blob/main/docs/oss/ARCHITECTURE.md
+Project-URL: Repository, https://github.com/aaagents/aaagents-oss
+Project-URL: Issues, https://github.com/aaagents/aaagents-oss/issues
+Keywords: trading,algorithmic,bora,oss,docker
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: typer>=0.12.0
+Requires-Dist: rich>=13.0.0
+
+# aaagents — BORA OSS Plug & Run CLI
+
+[![PyPI](https://img.shields.io/pypi/v/aaagents)](https://pypi.org/project/aaagents/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
+[![Python](https://img.shields.io/pypi/pyversions/aaagents)](https://pypi.org/project/aaagents/)
+
+The official CLI for the **AAAgents Community Edition** — a Docker-based,
+local-first AI trading platform stack (BORA: Build Once, Run Anywhere).
+
+> **Requires:** Docker Desktop (Windows/Mac) or Docker Engine (Linux), Python ≥ 3.11
+
+---
+
+## Quickstart
+
+```bash
+pip install aaagents
+aaagents install   # one-time setup wizard
+aaagents start     # launch the stack
+aaagents status    # verify all containers are healthy
+```
+
+---
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `aaagents install` | Interactive setup wizard: configures `.env.oss`, pulls Docker images |
+| `aaagents start` | Start all BORA containers in the background |
+| `aaagents start --no-detach` | Start in foreground (stream logs) |
+| `aaagents stop` | Stop all containers (volumes preserved) |
+| `aaagents status` | Show container health and port bindings |
+| `aaagents version` | Print CLI version |
+
+---
+
+## Stack Overview
+
+After `aaagents start`, the following services are available:
+
+| Service | URL | Description |
+|---|---|---|
+| **Frontend** | http://localhost | BORA Dashboard (React) |
+| **Public API** | http://localhost:8081 | REST API (Firebase-auth-gated in production) |
+| **Engine** | http://localhost:8001 | AI Trading Engine (internal) |
+| **Postgres** | localhost:5432 | Local database (loopback only) |
+| **Redis** | localhost:6379 | Cache / Round Table state (loopback only) |
+
+---
+
+## Configuration
+
+`aaagents install` creates `.env.oss` from the `.env.oss.example` template.
+To reconfigure, delete `.env.oss` and run `aaagents install` again, or edit it
+manually.
+
+**Required values:**
+- `POSTGRES_PASSWORD` — must be set; the stack refuses to start without it.
+
+**Optional values:**
+- `ALPACA_API_KEY` / `ALPACA_SECRET_KEY` — leave unset to boot in **offline mode** (no live broker calls).
+- `ALLOW_UNTRUSTED_PLUGINS` — set `true` only if you wrote and trust every plugin in `./plugins/round_table/`. See [ADR-OSS1](docs/oss/ARCHITECTURE.md).
+
+---
+
+## Security
+
+Report vulnerabilities privately to **security@aaagents.de**. See [SECURITY.md](SECURITY.md).
+
+---
+
+## License
+
+Apache 2.0 — see [LICENSE](LICENSE).

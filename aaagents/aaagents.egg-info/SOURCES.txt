@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+aaagents/__init__.py
+aaagents/cli.py
+aaagents.egg-info/PKG-INFO
+aaagents.egg-info/SOURCES.txt
+aaagents.egg-info/dependency_links.txt
+aaagents.egg-info/entry_points.txt
+aaagents.egg-info/requires.txt
+aaagents.egg-info/top_level.txt

@@ -1,0 +1,92 @@
+name: OSS CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-oss-stack:
+    runs-on: [aaa-runner-set-v3]
+    timeout-minutes: 45
+    env:
+      # CI credentials — safe dummy values, no real secrets
+      POSTGRES_PASSWORD: "ci-dummy-password"
+      # Required by serve_public_api.py fail-fast guard (REQUIRE_SIG check)
+      PROXY_ENGINE_SHARED_SECRET: "ci-dummy-shared-secret-32chars!!"
+      # Activates Shadow Boot CI bypass in scripts/shadow_boot.py
+      # (skips Alpaca + Gemini checks — only Redis is verified)
+      IS_CI: "true"
+      # Suppress Alpaca 401 noise in CI logs
+      ALPACA_API_KEY: "ci-dummy-key"
+      ALPACA_SECRET_KEY: "ci-dummy-secret"
+      # Required by BotEngine fallback checks when loading RL context
+      GEMINI_API_KEY: "ci-dummy-gemini-key"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    - name: Download Baseline Models (Mock)
+      run: |
+        mkdir -p data/ml_models
+        touch data/ml_models/dummy.pt
+
+    - name: Install Docker Compose
+      run: |
+        sudo curl -SL "https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64" \
+          -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    - name: Set lowercase org name
+      run: echo "ORG_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+
+    - name: Pull and start OSS Stack
+      run: |
+        docker-compose -f docker-compose.oss.yml up -d
+
+        echo "Waiting for backend API to be available..."
+        for i in {1..30}; do
+          if curl -s http://localhost:8001/health | grep -q "status"; then
+            echo "Backend is up!"
+            break
+          fi
+          echo "Waiting... $i/30"
+          sleep 5
+          if [ $i -eq 30 ]; then
+            echo "Timeout waiting for backend — dumping logs:"
+            docker-compose -f docker-compose.oss.yml logs --tail=100
+            exit 1
+          fi
+        done
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.12"
+    - name: "🧪 OSS Lock-In Tests (DSGVO + Network defaults)"
+      # These tests are static file audits (read YAML/TS/MD from the repo).
+      # They must run on the CI host — not inside the Docker container — so
+      # parents[3] path resolution correctly finds the repo root.
+      # --noconftest avoids importing backend dependencies (not needed here).
+      working-directory: "AI Trading Bot"
+      run: |
+        python -m pip install pytest --quiet
+        python -m pytest tests/unit/test_oss_dsgvo_network_defaults.py \
+               tests/unit/test_oss_compose_defaults.py \
+               tests/unit/test_oss_hygiene_defaults.py \
+          -v --tb=short --override-ini="addopts=" --noconftest -p no:warnings
+
+    - name: Dump container logs on failure
+      if: failure()
+      run: docker-compose -f docker-compose.oss.yml logs --tail=200
+
+    - name: Stop OSS Stack
+      if: always()
+      run: docker-compose -f docker-compose.oss.yml down -v
+
