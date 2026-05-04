@@ -42,7 +42,7 @@ setup: ## First-time setup: generate .env.oss with cryptographically secure secr
 	@$(SETUP_CMD)
 
 start: ## Start the AAAgents OSS stack (runs setup first if .env.oss is missing)
-	@python -c "import sys,os; sys.exit(0) if os.path.exists('.env.oss') else sys.exit(1)" || $(MAKE) setup
+	@test -f .env.oss || $(MAKE) setup
 	$(COMPOSE) up -d
 	@echo ""
 	@echo "Stack started. Dashboard: http://localhost"
