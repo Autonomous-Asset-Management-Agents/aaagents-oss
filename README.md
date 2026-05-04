@@ -44,7 +44,7 @@ docker compose --env-file .env.oss -f docker-compose.oss.yml up -d
 > ghcr.io/autonomous-asset-management-agents/aaagents-frontend:latest
 > ```
 
-> **Why Alpaca keys?** Without keys the system boots in **Offline Mode (Shadow Boot)** — all agents run, no orders execute. Add real Paper-Trading keys to `.env.oss` to activate order execution. See [setup details →](./docs/oss/README.md#schritt-2--umgebung-konfigurieren-ein-befehl)
+> **Why Alpaca keys?** Without keys the system boots in **Offline Mode (Shadow Boot)** — all agents run, no orders execute. Add real Paper-Trading keys to `.env.oss` to activate order execution. See [setup details →](./docs/oss/README.md#step-2--configure-the-environment-one-command)
 
 ---
 
