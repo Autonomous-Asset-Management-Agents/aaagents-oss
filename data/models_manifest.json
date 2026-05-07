@@ -1,0 +1,49 @@
+{
+  "release_tag": "models-v1.0",
+  "release_url": "https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/tag/models-v1.0",
+  "schema_version": 1,
+  "models": [
+    {
+      "filename": "lstm_model_v2.pth",
+      "url": "https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/download/models-v1.0/lstm_model_v2.pth",
+      "sha256": "b95152f36b8aa9ae3003d968103220ae9a366aa6d0e855228323f23cabf8ddbf",
+      "size_bytes": 3977938,
+      "purpose": "LSTM 5-day return predictor; consumed by LSTMSignalAgent (w=0.40) via active strategy in AgentRegistry"
+    },
+    {
+      "filename": "scaler_x_v2.pkl",
+      "url": "https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/download/models-v1.0/scaler_x_v2.pkl",
+      "sha256": "16d25b7b5443170229877c49536c086eb654365f6794bb67fc85e596542f3a54",
+      "size_bytes": 1399,
+      "purpose": "StandardScaler for the 34 input features (matches model_metadata_v2.json features_list)"
+    },
+    {
+      "filename": "scaler_y_v2.pkl",
+      "url": "https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/download/models-v1.0/scaler_y_v2.pkl",
+      "sha256": "1d7e659c720b893c56bed154fc9ce984fdc41958f2c3f5570cbd52e33cc2f64f",
+      "size_bytes": 591,
+      "purpose": "StandardScaler for the LSTM target (5-day return)"
+    },
+    {
+      "filename": "model_metadata_v2.json",
+      "url": "https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/download/models-v1.0/model_metadata_v2.json",
+      "sha256": "4bfc6e2efaf64e7e9a3b99ef71b7d9db67116657f95ba0858b968f470a819ef0",
+      "size_bytes": 814,
+      "purpose": "Feature list + LSTM hyper-parameters (input_dim=34, hidden_dim=128, num_layers=3, sequence_length=60)"
+    },
+    {
+      "filename": "rl_agent_v5.zip",
+      "url": "https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/download/models-v1.0/rl_agent_v5.zip",
+      "sha256": "50672518afeaa7d80c29cf444f94a7f13b6815ea4256fbc9ade47c776214a641",
+      "size_bytes": 9844538,
+      "purpose": "RecurrentPPO RL agent (sb3-contrib); consumed by RLConfidenceAgent (w=0.40) via active strategy"
+    },
+    {
+      "filename": "rl_stats_v5.pkl",
+      "url": "https://github.com/Autonomous-Asset-Management-Agents/aaagents-oss/releases/download/models-v1.0/rl_stats_v5.pkl",
+      "sha256": "c122ae6d9781e25177b49e14fab7b7e8ad2f51eb0e1d1cbe5088aa0663346f86",
+      "size_bytes": 1663,
+      "purpose": "VecNormalize observation stats matching the RL training environment"
+    }
+  ]
+}
